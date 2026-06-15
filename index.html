@@ -236,7 +236,10 @@
                         </div>
                         <div class="exam-area hidden" id="exam-area">
                             <div class="exam-header">
-                                <h3 id="exam-title">练习</h3>
+                                <div style="display: flex; align-items: center; gap: 12px;">
+                                    <button class="btn-secondary" onclick="exitExam()" style="padding: 6px 14px; font-size: 13px;">✕ 退出</button>
+                                    <h3 id="exam-title" style="margin:0;">练习</h3>
+                                </div>
                                 <div class="exam-info">
                                     <span><span id="current-question">1</span>/<span id="total-questions">10</span></span>
                                     <span class="timer" id="exam-timer">00:00</span>

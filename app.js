@@ -825,11 +825,21 @@ function closeModal() {
     document.getElementById('explanation-modal').classList.add('hidden');
 }
 
+// 退出考试（做题过程中退出）
+function exitExam() {
+    if (confirm('确定要退出考试吗？当前进度不会保存。')) {
+        clearInterval(examTimer);
+        backToPractice();
+    }
+}
+
 // 返回练习页面
 function backToPractice() {
     document.getElementById('exam-area').classList.add('hidden');
     document.querySelector('.practice-modes').classList.remove('hidden');
     document.getElementById('btn-prev').classList.remove('hidden');
+    document.getElementById('btn-next').classList.remove('hidden');
+    document.getElementById('btn-submit').classList.add('hidden');
 }
 
 // 初始化学情分析页面
