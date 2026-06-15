@@ -382,7 +382,7 @@ function toggleChapter(chapterId) {
     lessonList.classList.toggle('hidden');
 }
 
-// 加载课程
+// 加载课程（手机端全屏显示课程内容，桌面端右侧显示）
 function loadLesson(lessonId) {
     const lesson = mathData.chapters
         .flatMap(c => c.lessons)
@@ -392,11 +392,14 @@ function loadLesson(lessonId) {
     
     const contentArea = document.getElementById('lesson-content');
     contentArea.innerHTML = `
-        <h2 class="lesson-title">${lesson.title}</h2>
+        <div class="lesson-detail-header">
+            <button class="back-btn" onclick="closeLessonDetail()">← 返回</button>
+            <span class="lesson-detail-title">${lesson.title}</span>
+        </div>
         <div class="lesson-body">
             ${lesson.content}
         </div>
-        <div class="lesson-actions" style="margin-top: 30px; display: flex; gap: 12px;">
+        <div class="lesson-actions" style="margin-top: 24px; display: flex; gap: 10px; flex-wrap: wrap;">
             <button class="btn-primary" onclick="markLessonComplete('${lesson.id}')">
                 ✓ 标记为已学完
             </button>
@@ -409,11 +412,27 @@ function loadLesson(lessonId) {
         </div>
     `;
     
+    // 手机端：隐藏章节列表，显示课程内容区域为全屏
+    if (window.innerWidth <= 768) {
+        contentArea.classList.add('lesson-fullscreen');
+        document.getElementById('chapter-list').style.display = 'none';
+    }
+    
     // 标记为活跃
     document.querySelectorAll('.lesson-item').forEach(item => {
         item.classList.remove('active');
     });
-    event.target.closest('.lesson-item').classList.add('active');
+    if (event && event.target) {
+        event.target.closest('.lesson-item')?.classList.add('active');
+    }
+}
+
+// 关闭课程详情，返回章节列表（手机端）
+function closeLessonDetail() {
+    const contentArea = document.getElementById('lesson-content');
+    contentArea.classList.remove('lesson-fullscreen');
+    contentArea.innerHTML = `<div class="empty-state"><span class="empty-icon">📖</span><p>选择左侧章节开始学习</p></div>`;
+    document.getElementById('chapter-list').style.display = '';
 }
 
 // 标记课程完成
