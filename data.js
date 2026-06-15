@@ -604,7 +604,7 @@ const mathData = {
             lessons: [
                 {
                     id: "4-1",
-                    title: "用"假设"策略解决问题",
+                    title: "用\"假设\"策略解决问题",
                     content: `
                         <div class="lesson-body">
                             <h4>📖 什么是假设策略</h4>
@@ -643,7 +643,7 @@ const mathData = {
                 },
                 {
                     id: "4-2",
-                    title: "用"转化"策略解决问题",
+                    title: "用\"转化\"策略解决问题",
                     content: `
                         <div class="lesson-body">
                             <h4>📖 什么是转化策略</h4>
