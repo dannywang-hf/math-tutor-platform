@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>数学小助手</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="app">
+        <!-- 登录/注册页面 -->
+        <div id="auth-page" class="page active">
+            <div class="auth-container">
+                <div class="logo">
+                    <span class="logo-icon">📚</span>
+                    <h1>数学小助手</h1>
+                    <p>六年级数学一对一辅导平台</p>
+                </div>
+                <div class="auth-tabs">
+                    <button class="tab-btn active" data-tab="login">登录</button>
+                    <button class="tab-btn" data-tab="register">注册</button>
+                </div>
+                <div class="auth-form" id="login-form">
+                    <input type="text" placeholder="用户名" id="login-username">
+                    <input type="password" placeholder="密码" id="login-password">
+                    <button class="btn-primary btn-block" onclick="login()">登录</button>
+                </div>
+                <div class="auth-form hidden" id="register-form">
+                    <input type="text" placeholder="孩子姓名" id="reg-name">
+                    <select id="reg-grade">
+                        <option value="6">六年级</option>
+                    </select>
+                    <input type="text" placeholder="用户名" id="reg-username">
+                    <input type="password" placeholder="密码" id="reg-password">
+                    <button class="btn-primary btn-block" onclick="register()">注册</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 主应用页面 -->
+        <div id="main-page" class="page">
+            <!-- 顶部标题栏 (手机端显示) -->
+            <header class="mobile-header" id="mobile-header">
+                <span class="mobile-title" id="mobile-page-title">学习概览</span>
+            </header>
+
+            <!-- 侧边栏 (桌面端) -->
+            <aside class="sidebar" id="sidebar-desktop">
+                <div class="user-info">
+                    <div class="avatar">👦</div>
+                    <div class="user-details">
+                        <h3 id="student-name">学生</h3>
+                        <span class="grade">六年级</span>
+                    </div>
+                </div>
+                <nav class="nav-menu">
+                    <a href="#" class="nav-item active" data-page="dashboard">
+                        <span class="nav-icon">📊</span>
+                        <span>学习概览</span>
+                    </a>
+                    <a href="#" class="nav-item" data-page="study">
+                        <span class="nav-icon">📖</span>
+                        <span>课程学习</span>
+                    </a>
+                    <a href="#" class="nav-item" data-page="review">
+                        <span class="nav-icon">🔄</span>
+                        <span>复习巩固</span>
+                    </a>
+                    <a href="#" class="nav-item" data-page="practice">
+                        <span class="nav-icon">✏️</span>
+                        <span>练习考试</span>
+                    </a>
+                    <a href="#" class="nav-item" data-page="analysis">
+                        <span class="nav-icon">📈</span>
+                        <span>学情分析</span>
+                    </a>
+                    <a href="#" class="nav-item" data-page="tutor">
+                        <span class="nav-icon">👨‍🏫</span>
+                        <span>AI辅导</span>
+                    </a>
+                </nav>
+                <div class="sidebar-footer">
+                    <button class="btn-logout" onclick="logout()">退出登录</button>
+                </div>
+            </aside>
+
+            <!-- 底部导航栏 (手机端) -->
+            <nav class="bottom-nav" id="bottom-nav">
+                <a href="#" class="bottom-nav-item active" data-page="dashboard">
+                    <span class="bnav-icon">📊</span>
+                    <span class="bnav-label">概览</span>
+                </a>
+                <a href="#" class="bottom-nav-item" data-page="study">
+                    <span class="bnav-icon">📖</span>
+                    <span class="bnav-label">课程</span>
+                </a>
+                <a href="#" class="bottom-nav-item" data-page="practice">
+                    <span class="bnav-icon">✏️</span>
+                    <span class="bnav-label">练习</span>
+                </a>
+                <a href="#" class="bottom-nav-item" data-page="analysis">
+                    <span class="bnav-icon">📈</span>
+                    <span class="bnav-label">分析</span>
+                </a>
+                <a href="#" class="bottom-nav-item" data-page="tutor">
+                    <span class="bnav-icon">👨‍🏫</span>
+                    <span class="bnav-label">AI辅导</span>
+                </a>
+            </nav>
+
+            <!-- 主内容区 -->
+            <main class="main-content" id="main-content">
+                <!-- 学习概览页 -->
+                <div id="dashboard-page" class="content-page active">
+                    <header class="page-header">
+                        <h2>学习概览</h2>
+                        <p id="current-date"></p>
+                    </header>
+                    <div class="dashboard-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon">📚</div>
+                            <div class="stat-info">
+                                <h4>已学知识点</h4>
+                                <span class="stat-value" id="learned-count">0</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">✅</div>
+                            <div class="stat-info">
+                                <h4>掌握程度</h4>
+                                <span class="stat-value" id="mastery-rate">0%</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">📝</div>
+                            <div class="stat-info">
+                                <h4>已完成练习</h4>
+                                <span class="stat-value" id="practice-count">0</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">🔥</div>
+                            <div class="stat-info">
+                                <h4>连续学习</h4>
+                                <span class="stat-value"><span id="streak-days">0</span>天</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dashboard-sections">
+                        <div class="section-card">
+                            <h3>📋 今日学习任务</h3>
+                            <div class="task-list" id="today-tasks">
+                                <div class="empty-state">暂无今日任务，开始学习吧！</div>
+                            </div>
+                        </div>
+                        <div class="section-card">
+                            <h3>📊 学习进度</h3>
+                            <div class="progress-chart" id="progress-chart">
+                                <canvas id="progressCanvas"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 课程学习页 -->
+                <div id="study-page" class="content-page">
+                    <header class="page-header">
+                        <h2>课程学习</h2>
+                        <p>根据你的学习情况，推荐适合的课程</p>
+                    </header>
+                    <div class="study-container" id="study-container">
+                        <div class="chapter-list" id="chapter-list">
+                            <!-- 章节列表由JS生成 -->
+                        </div>
+                        <div class="lesson-content" id="lesson-content">
+                            <div class="empty-state">
+                                <span class="empty-icon">📖</span>
+                                <p>选择左侧章节开始学习</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 复习巩固页 -->
+                <div id="review-page" class="content-page">
+                    <header class="page-header">
+                        <h2>复习巩固</h2>
+                        <p>针对薄弱环节进行专项复习</p>
+                    </header>
+                    <div class="review-container">
+                        <div class="weak-points" id="weak-points">
+                            <h3>🎯 薄弱知识点</h3>
+                            <div class="weak-list" id="weak-list">
+                                <div class="empty-state">暂无薄弱知识点，继续保持！</div>
+                            </div>
+                        </div>
+                        <div class="review-history">
+                            <h3>📚 复习历史</h3>
+                            <div class="history-list" id="review-history-list">
+                                <div class="empty-state">还没有复习记录</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 练习考试页 -->
+                <div id="practice-page" class="content-page">
+                    <header class="page-header">
+                        <h2>练习考试</h2>
+                        <p>通过练习检验学习成果</p>
+                    </header>
+                    <div class="practice-container">
+                        <div class="practice-modes">
+                            <div class="mode-card" onclick="startQuickPractice()">
+                                <span class="mode-icon">⚡</span>
+                                <h3>快速练习</h3>
+                                <p>10道题目，快速检测</p>
+                            </div>
+                            <div class="mode-card" onclick="startChapterPractice()">
+                                <span class="mode-icon">📚</span>
+                                <h3>章节练习</h3>
+                                <p>针对特定章节练习</p>
+                            </div>
+                            <div class="mode-card" onclick="startWeakPointPractice()">
+                                <span class="mode-icon">🎯</span>
+                                <h3>薄弱点专练</h3>
+                                <p>针对薄弱环节强化</p>
+                            </div>
+                            <div class="mode-card" onclick="startMockExam()">
+                                <span class="mode-icon">📝</span>
+                                <h3>模拟考试</h3>
+                                <p>完整试卷模拟测试</p>
+                            </div>
+                        </div>
+                        <div class="exam-area hidden" id="exam-area">
+                            <div class="exam-header">
+                                <h3 id="exam-title">练习</h3>
+                                <div class="exam-info">
+                                    <span><span id="current-question">1</span>/<span id="total-questions">10</span></span>
+                                    <span class="timer" id="exam-timer">00:00</span>
+                                </div>
+                            </div>
+                            <div class="question-area" id="question-area"></div>
+                            <div class="exam-actions">
+                                <button class="btn-secondary" onclick="prevQuestion()" id="btn-prev">上一题</button>
+                                <button class="btn-primary" onclick="nextQuestion()" id="btn-next">下一题</button>
+                                <button class="btn-success hidden" onclick="submitExam()" id="btn-submit">提交试卷</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 学情分析页 -->
+                <div id="analysis-page" class="content-page">
+                    <header class="page-header">
+                        <h2>学情分析</h2>
+                        <p>全面了解学习情况</p>
+                    </header>
+                    <div class="analysis-container">
+                        <div class="analysis-card">
+                            <h3>📊 知识点掌握情况</h3>
+                            <div class="knowledge-radar" id="knowledge-radar">
+                                <canvas id="radarCanvas"></canvas>
+                            </div>
+                        </div>
+                        <div class="analysis-card">
+                            <h3>📈 学习趋势</h3>
+                            <div class="trend-chart" id="trend-chart">
+                                <canvas id="trendCanvas"></canvas>
+                            </div>
+                        </div>
+                        <div class="analysis-card full-width">
+                            <h3>📋 详细分析报告</h3>
+                            <div class="report-content" id="analysis-report"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AI辅导页 -->
+                <div id="tutor-page" class="content-page">
+                    <header class="page-header">
+                        <h2>AI辅导</h2>
+                        <p>有问题随时问，AI老师一对一解答</p>
+                    </header>
+                    <div class="tutor-container" id="tutor-container">
+                        <div class="chat-area" id="chat-area">
+                            <div class="chat-messages" id="chat-messages">
+                                <div class="message system">
+                                    <div class="message-avatar">🤖</div>
+                                    <div class="message-content">
+                                        <p>你好！我是你的AI数学老师。有任何数学问题都可以问我，我会一步步教你解答。😊</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="chat-input-area">
+                                <div class="input-tools">
+                                    <button class="tool-btn" onclick="insertFormula()" title="插入公式">∑</button>
+                                    <button class="tool-btn" onclick="uploadImage()" title="上传图片">📷</button>
+                                </div>
+                                <div class="input-box">
+                                    <textarea id="chat-input" placeholder="输入你的问题..." rows="3"></textarea>
+                                    <button class="btn-send" onclick="sendMessage()">发送</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tutor-sidebar" id="tutor-sidebar">
+                            <div class="quick-questions">
+                                <h4>常见问题</h4>
+                                <button class="quick-q" onclick="askQuick('分数怎么通分？')">分数怎么通分？</button>
+                                <button class="quick-q" onclick="askQuick('圆的面积公式是什么？')">圆的面积公式是什么？</button>
+                                <button class="quick-q" onclick="askQuick('解方程的步骤')">解方程的步骤</button>
+                                <button class="quick-q" onclick="askQuick('比例的应用题')">比例的应用题</button>
+                            </div>
+                            <div class="learning-tips">
+                                <h4>💡 学习小贴士</h4>
+                                <div class="tip-card" id="daily-tip">
+                                    每天坚持练习10道题，数学成绩会有明显提升！
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <!-- 题目解析弹窗 -->
+        <div class="modal hidden" id="explanation-modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>题目解析</h3>
+                    <button class="btn-close" onclick="closeModal()">×</button>
+                </div>
+                <div class="modal-body" id="explanation-content"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="ppt-data.js"></script>
+    <script src="presentation.js"></script>
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
